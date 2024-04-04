@@ -1,0 +1,10 @@
+# Create virtual environment (optional but recommended)
+# python3 -m venv venv
+
+# Activate virtual environment
+# source venv/bin/activate  # Linux/macOS
+
+# Install FastAPI
+pip install fastapi
+pip install streamlit
+pip install speech_recognition

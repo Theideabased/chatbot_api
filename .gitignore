@@ -1,0 +1,3 @@
+venv
+deepspeech_scorer.scorer
+deepspeech_model.pb
