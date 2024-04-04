@@ -1,5 +1,5 @@
 import streamlit as st
-from google.cloud import speech_v1p1beta1 as speech
+from google.cloud import speech_v2 as speech
 
 @st.cache
 def get_history():
@@ -21,7 +21,14 @@ def display_chat():
       st.chat_message("Assistant", message["assistant"])
 
 def get_voice_input():
-  client = speech.SpeechClient()
+  # Replace with your Google Cloud project ID
+  project_id = "your-project-id"
+
+  # Create a SpeechServiceClient object
+  client = speech.SpeechClient.from_service_account_json(
+      "[PATH_TO_YOUR_SERVICE_ACCOUNT_JSON]"  # Replace with path to your service account JSON file
+  )
+
   config = {
       "encoding": speech.RecognitionConfig.AudioEncoding.LINEAR16,
       "sample_rate_hertz": 16000,
@@ -33,8 +40,9 @@ def get_voice_input():
     audio_data = audio.getvalue()
 
   if audio_data:
-    audio = speech.RecognitionAudio(content=audio_data)
-    response = client.recognize(config=config, audio=audio)
+    audio = speech.Audio(content=audio_data)
+
+    response = client.recognize(request={"config": config, "audio": audio})
 
     for result in response.results:
       return result.alternatives[0].transcript.lower()
